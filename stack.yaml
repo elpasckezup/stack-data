@@ -1,6 +1,5 @@
 description: Stack for Templates, Plugins, Tasks and Stackfiles for building Data Mesh
 name: data
-version: 1.0.0
 display-name: data
 picture: stack.png
 category: backend # Ref: https://docs.stackspot.com/docs/create-stacks/yaml-files/plugin/#category
