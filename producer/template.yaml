@@ -1,4 +1,5 @@
 name: producer
+version: 1.0.0
 description: Template for producer account data mesh infrastructure
 types:
   - app-template

@@ -1,4 +1,5 @@
 name: ingestion
+version: 1.0.0
 description: Ingestion plugin for data mesh
 display-name: ingestion
 picture: plugin.png
