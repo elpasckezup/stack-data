@@ -41,7 +41,7 @@ def start(path: str):
 
 def apply(path: str, plugin: dict):
     name = plugin['name']
-    os.system(f'stk apply plugin -p {path}/{name}')
+    os.system(f'stk apply plugin data/{name}')
     if 'plugins' in plugin:
         for child in plugin['plugins']:
             apply(path=path, plugin=child)
