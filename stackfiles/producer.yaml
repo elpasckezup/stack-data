@@ -1,6 +1,12 @@
 type: app
-description: Default stackfile usecase description
-# template used to create the project
+description: Stackfile to create producer resources
 template: data/producer
+# inputs:
+#   some_input: value
 # plugins:
-#   - plugin: data/<plugin-name>
+# - plugin: <stack-name>/<plugin-name>
+#   inputs:
+#     some_input: value
+#     some_list:
+#     - item1
+#     - item2
