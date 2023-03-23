@@ -32,24 +32,23 @@ def ask(data: dict):
                         for plugin in unselected:
                             data['plugins'].remove(plugin)
 
-def start(path: str):
-    data = yaml.safe_load(Path(f'{path}/producer/config/setup.yaml').read_text())
+def start(metadata: Metadata):
+    data = yaml.safe_load(Path(f'{metadata.component_path}/config/setup.yaml').read_text())
     ask(data=data)
     if 'plugins' in data:
         for plugin in data['plugins']:    
-            apply(path=path, plugin=plugin)
+            apply(plugin=plugin, metadata=metadata)
 
-def apply(path: str, plugin: dict):
+def apply(plugin: dict, metadata: Metadata):
     name = plugin['name']
-    os.system(f'stk apply plugin -p {path}/{name}')
+    os.system(f'cd {metadata.target_path} && stk apply plugin data/{name}')
     if 'plugins' in plugin:
         for child in plugin['plugins']:
-            apply(path=path, plugin=child)
+            apply(plugin=child, metadata=metadata)
         
 def run(metadata: Metadata = None):
-    os.system(f'cd {metadata.target_path}')
     try:
-        start(path=metadata.stack_path)
+        start(metadata=metadata)
     except KeyboardInterrupt:
         shutil.rmtree(metadata.target_path)
         sys.exit()
