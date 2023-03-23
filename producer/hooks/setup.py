@@ -33,7 +33,7 @@ def ask(data: dict):
                             data['plugins'].remove(plugin)
 
 def start(path: str):
-    data = yaml.safe_load(Path(f'{path}/basic/hooks/setup.yaml').read_text())
+    data = yaml.safe_load(Path(f'{path}/producer/config/setup.yaml').read_text())
     ask(data=data)
     if 'plugins' in data:
         for plugin in data['plugins']:    
