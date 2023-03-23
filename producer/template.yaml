@@ -1,0 +1,9 @@
+name: producer
+description: Template for producer account data mesh infrastructure
+types:
+  - app-template
+inputs:
+  - label: Project name
+    type: text
+    name: project_name
+    default: project-name
