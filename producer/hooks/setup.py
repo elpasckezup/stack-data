@@ -33,7 +33,7 @@ def ask(data: dict):
                             data['plugins'].remove(plugin)
 
 def start(path: str):
-    data = yaml.safe_load(Path(f'{path}/producer/config/setup.yaml').read_text())
+    data = yaml.safe_load(Path(f'{path}/basic/hooks/setup.yaml').read_text())
     ask(data=data)
     if 'plugins' in data:
         for plugin in data['plugins']:    
@@ -41,12 +41,13 @@ def start(path: str):
 
 def apply(path: str, plugin: dict):
     name = plugin['name']
-    os.system(f'stk apply plugin data/{name}')
+    os.system(f'stk apply plugin -p {path}/{name}')
     if 'plugins' in plugin:
         for child in plugin['plugins']:
             apply(path=path, plugin=child)
         
 def run(metadata: Metadata = None):
+    os.system(f'cd {metadata.target_path}')
     try:
         start(path=metadata.stack_path)
     except KeyboardInterrupt:
