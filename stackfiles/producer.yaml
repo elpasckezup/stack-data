@@ -1,0 +1,6 @@
+type: app
+description: Default stackfile usecase description
+# template used to create the project
+template: data/producer
+# plugins:
+#   - plugin: data/<plugin-name>

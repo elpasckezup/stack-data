@@ -3,8 +3,12 @@ version: 1.0.0
 description: Template for producer account data mesh infrastructure
 types:
   - app-template
-inputs:
-  - label: Project name
-    type: text
-    name: project_name
-    default: project-name
+# inputs:
+#   - label: Project name
+#     type: text
+#     name: project_name
+#     default: project-name
+hooks:
+  - type: run-script
+    trigger: after-render
+    script: hooks/setup.py

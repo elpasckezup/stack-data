@@ -1,0 +1,5 @@
+plugins:
+- name: ingestion
+  order: 0
+  title: Ingestion
+  required: true
