@@ -25,10 +25,6 @@ hooks:
           snippet: snippets/main.tf
           when:
             not-exists-snippet: snippets/main.tf
-    condition:
-      variable: capabilities
-      operator: containsAny
-      value: ingestion
   - type: edit
     trigger: after-render
     path: iac/variables.tf
@@ -38,10 +34,6 @@ hooks:
           snippet: snippets/variables.tf
           when:
             not-exists-snippet: snippets/variables.tf
-    condition:
-      variable: capabilities
-      operator: containsAny
-      value: ingestion
   - type: edit
     trigger: after-render
     path: iac/terraform.tfvars
@@ -51,7 +43,3 @@ hooks:
           snippet: snippets/terraform.tfvars
           when:
             not-exists-snippet: snippets/terraform.tfvars
-    condition:
-      variable: capabilities
-      operator: containsAny
-      value: ingestion
