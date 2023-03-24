@@ -50,7 +50,7 @@ def apply(plugin: dict, metadata: Metadata):
         
 def run(metadata: Metadata = None):
     try:
-        questionary.confirm('deseja continuar?')
+        questionary.confirm('deseja continuar?').ask()
         start(metadata=metadata)
         return metadata
     except KeyboardInterrupt:
