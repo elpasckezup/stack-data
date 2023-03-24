@@ -4,9 +4,9 @@ description: Template for producer account data mesh infrastructure
 types:
   - app-template
 inputs:
-  - label: Project name
+  - label: Product data name
     type: text
-    name: project_name
+    name: product_name
     global: true
 hooks:
   - type: run-script
