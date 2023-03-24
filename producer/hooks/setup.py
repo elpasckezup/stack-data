@@ -65,7 +65,7 @@ def run(metadata: Metadata = None):
             yaml.dump(data, file)
             stack = os.path.basename(metadata.stack_path)
             for capability in metadata.global_inputs['capabilities']:
-                os.system(f'cd {metadata.target_path} && stk apply plugin {stack}/{capability} --skip-warning')
+                os.system(f'cd {metadata.target_path} && stk apply plugin -p {metadata.stack_path}/{capability} --skip-warning')
         return metadata
     except KeyboardInterrupt:
         shutil.rmtree(metadata.target_path)
