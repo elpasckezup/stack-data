@@ -7,9 +7,8 @@ inputs:
   - label: Project name
     type: text
     name: project_name
-    default: project-name
     global: true
-hooks:
-  - type: run-script
-    trigger: after-render
-    script: hooks/setup.py
+# hooks:
+#   - type: run-script
+#     trigger: after-render
+#     script: hooks/setup.py
