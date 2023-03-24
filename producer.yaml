@@ -1,0 +1,12 @@
+type: app
+description: Stackfile to create producer resources
+template: <stack-name>/<template-name>
+inputs:
+  some_input: value
+plugins:
+- plugin: <stack-name>/<plugin-name>
+  inputs:
+    some_input: value
+    some_list:
+    - item1
+    - item2
