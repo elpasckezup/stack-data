@@ -50,6 +50,7 @@ def apply(plugin: dict, metadata: Metadata):
 def run(metadata: Metadata = None):
     try:
         start(metadata=metadata)
+        return metadata
     except KeyboardInterrupt:
         shutil.rmtree(metadata.target_path)
         sys.exit()
