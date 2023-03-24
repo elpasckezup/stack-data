@@ -42,16 +42,15 @@ def start(metadata: Metadata):
 def apply(plugin: dict, metadata: Metadata):
     name = plugin['name']
     stack = os.path.basename(metadata.stack_path)
-    #os.system(f'cd {metadata.target_path} && stk apply plugin {stack}/{name} --skip-warning')
-    os.system(f'stk apply plugin {stack}/{name} --skip-warning')
+    os.system(f'cd {metadata.target_path} && stk apply plugin {stack}/{name} --skip-warning')
+    #os.system(f'stk apply plugin {stack}/{name} --skip-warning')
     if 'plugins' in plugin:
         for child in plugin['plugins']:
             apply(plugin=child, metadata=metadata)
         
 def run(metadata: Metadata = None):
     try:
-        print(metadata.inputs)
-        print(metadata.global_inputs)
+        questionary.confirm('deseja continuar?')
         start(metadata=metadata)
         return metadata
     except KeyboardInterrupt:
