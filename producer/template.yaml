@@ -8,10 +8,6 @@ inputs:
     type: text
     name: product_name
     global: true
-  - label: Region name
-    type: text
-    name: region_name
-    global: true
 hooks:
   - type: run-script
     trigger: after-render
