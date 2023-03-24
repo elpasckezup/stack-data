@@ -2,4 +2,12 @@ plugins:
 - name: ingestion
   order: 0
   title: Ingestion
-  required: true
+  required: false
+- name: distribution
+  order: 1
+  title: Distribution
+  required: false
+- name: transformation
+  order: 2
+  title: Transformation
+  required: false

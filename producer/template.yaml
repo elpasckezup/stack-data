@@ -8,18 +8,13 @@ inputs:
     type: text
     name: product_name
     global: true
-  - label: Select capabilities 
-    type: multiselect
-    name: capabilities
+  - label: Region name
+    type: text
+    name: region_name
     global: true
-    items:
-      - ingestion
-      - distribution
-      - transformation
-# hooks:
-#   - type: run-script
-#     trigger: after-render
-#     script: hooks/setup.py
-
+hooks:
+  - type: run-script
+    trigger: after-render
+    script: hooks/setup.py
 global-computed-inputs:
   resource_prefix: "{{product_name}}"

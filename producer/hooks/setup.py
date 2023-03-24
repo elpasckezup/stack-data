@@ -21,7 +21,7 @@ def ask(data: dict):
             choices = [questionary.Choice(title=plugin['title'], value=plugin['name']) for plugin in optional ]
             choices.append(questionary.Separator(line='-'*30))
             choices.append(questionary.Choice(title='Select none', value='none'))
-            answers = questionary.checkbox(message=f'Select optional [{name}] items', choices=choices).unsafe_ask()
+            answers = questionary.checkbox(message=f'Select optional [{name}] capabilities', choices=choices).unsafe_ask()
             if answers:
                 if 'none' in answers:
                     for plugin in optional:
@@ -35,22 +35,37 @@ def ask(data: dict):
 def start(metadata: Metadata):
     data = yaml.safe_load(Path(f'{metadata.component_path}/config/setup.yaml').read_text())
     ask(data=data)
+    metadata.global_inputs['capabilities'] = []
     if 'plugins' in data:
         for plugin in data['plugins']:    
             apply(plugin=plugin, metadata=metadata)
 
 def apply(plugin: dict, metadata: Metadata):
-    name = plugin['name']
-    stack = os.path.basename(metadata.stack_path)
-    #os.system(f'cd {metadata.target_path} && stk apply plugin {stack}/{name} --skip-warning')
+    metadata.global_inputs['capabilities'].append(plugin['name'])
     if 'plugins' in plugin:
         for child in plugin['plugins']:
             apply(plugin=child, metadata=metadata)
         
 def run(metadata: Metadata = None):
     try:
-        questionary.confirm('deseja continuar?').ask()
         start(metadata=metadata)
+        with open(f'{metadata.target_path}/stk.yaml', 'w') as file:
+            template = os.path.basename(metadata.component_path)
+            data = {
+                'stack_type': 'app',
+                'applied_templates': [
+                    {
+                        'inputs': metadata.inputs,
+                        'template_data_path': f'/{template}'
+                    }
+                ],
+                'global_inputs': metadata.global_inputs,
+                'global_computed_inputs': metadata.global_computed_inputs
+            }
+            yaml.dump(data, file)
+            stack = os.path.basename(metadata.stack_path)
+            for capability in metadata.global_inputs['capabilities']:
+                os.system(f'cd {metadata.target_path} && stk apply plugin {stack}/{capability} --skip-warning')
         return metadata
     except KeyboardInterrupt:
         shutil.rmtree(metadata.target_path)
