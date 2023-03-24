@@ -1,7 +1,6 @@
-name: ingestion
-version: 1.0.0
-description: Ingestion plugin for data mesh
-display-name: ingestion
+name: distribution
+description: Distribution plugin for data mesh
+display-name: distribution
 picture: plugin.png
 category: backend # Ref: https://docs.stackspot.com/docs/create-stacks/yaml-files/plugin/#category
 compatibility:
@@ -28,7 +27,7 @@ hooks:
     condition:
       variable: capabilities
       operator: containsAny
-      value: ingestion
+      value: distribution
   - type: edit
     trigger: after-render
     path: iac/variables.tf
@@ -41,7 +40,7 @@ hooks:
     condition:
       variable: capabilities
       operator: containsAny
-      value: ingestion
+      value: distribution
   - type: edit
     trigger: after-render
     path: iac/terraform.tfvars
@@ -54,4 +53,4 @@ hooks:
     condition:
       variable: capabilities
       operator: containsAny
-      value: ingestion
+      value: distribution

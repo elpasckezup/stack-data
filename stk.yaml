@@ -1,0 +1,9 @@
+applied_templates:
+- inputs: {}
+  template_data_path: ''
+- inputs: {}
+  template_data_path: /ingestion
+global_computed_inputs: {}
+global_inputs: {}
+stack: stack-spot
+stack_type: app
