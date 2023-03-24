@@ -49,6 +49,7 @@ def apply(plugin: dict, metadata: Metadata):
         
 def run(metadata: Metadata = None):
     try:
+        print(metadata.global_inputs)
         start(metadata=metadata)
         return metadata
     except KeyboardInterrupt:
