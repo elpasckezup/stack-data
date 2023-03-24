@@ -52,7 +52,7 @@ def run(metadata: Metadata = None):
     try:
         print(metadata.inputs)
         print(metadata.global_inputs)
-        #start(metadata=metadata)
+        start(metadata=metadata)
         return metadata
     except KeyboardInterrupt:
         shutil.rmtree(metadata.target_path)
