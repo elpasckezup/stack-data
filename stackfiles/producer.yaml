@@ -1,5 +1,5 @@
 type: app
 description: Stackfile to create producer resources
 template: data/producer
-plugins:
-- plugin: data/ingestion
+# plugins:
+# - plugin: data/ingestion
