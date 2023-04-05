@@ -53,11 +53,16 @@ def append(root=dict, data=dict):
     elif kind == 'Storage/S3':
         Dictionary.apply(data=root, path='storage.s3', value=spec)
     elif 'Ingestion/Source' in kind:
+        types = {
+            'Ingestion/Source/S3': 'S3',
+            'Ingestion/Source/RDS': 'RDS',
+            'Ingestion/Source/DynamoDB': 'DYNAMO_DB'
+        }
+        spec['type'] = types[kind]
         sources = Dictionary.extract(data=root, path='ingestion.sources')
         if sources == None:
             sources = []
             Dictionary.apply(data=root, path='ingestion.sources', value=sources)
-        spec['type'] = os.path.basename(kind)
         sources.append(spec)
     elif 'DataProduct/Discoverability' in kind:
         Dictionary.apply(data=root, path='dataproduct.discoverability', value=spec)
