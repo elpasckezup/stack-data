@@ -73,9 +73,9 @@ def start(workdir: str) -> dict:
     root = {}
     for path, folders, files in os.walk(workdir):
         for file in files:
-            print(os.path.join(path, file))
-            data = load(path=os.path.join(path, file))
-            append(root=root, data=data)
+            if file.endswith("yml") or file.endswith("yaml"):
+                data = load(path=os.path.join(path, file))
+                append(root=root, data=data)
     return root
 
 def run(metadata: Metadata = None):
