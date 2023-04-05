@@ -8,9 +8,11 @@ inputs:
     type: text
     name: product_name
     global: true
+
 hooks:
   - type: run-script
-    trigger: after-render
-    script: hooks/setup.py
+    trigger: before-input
+    script: hooks/scan.py
+
 global-computed-inputs:
   resource_prefix: "{{product_name}}"

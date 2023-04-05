@@ -1,0 +1,456 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$ref": "#/definitions/Producer",
+    "definitions": {
+        "Producer": {
+            "type": "object",
+            "title": "Producer",
+            "properties": {
+                "kind": {
+                    "type": "string",
+                    "enum": [
+                        "Application",
+                        "Ingestion/Api",
+                        "Ingestion/Source/S3",
+                        "Ingestion/Source/RDS",
+                        "Ingestion/Source/DynamoDB",
+                        "Storage/S3",
+                        "DataProduct/Discoverability",
+                        "DataProduct/DataSet",
+                        "DataProduct/Semantic"
+                    ]
+                },
+                "metadata": {
+                    "$ref": "#/definitions/Metadata"
+                }
+            },
+            "required": [ "kind", "spec" ],
+            "allOf": [
+                {
+                    "if": {
+                        "properties": { "kind": { "const": "Application" } }
+                    },
+                    "then": {
+                        "properties": { "spec": { "$ref": "#/definitions/Application" } }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": { "kind": { "const": "Ingestion/Api" } }
+                    },
+                    "then": {
+                        "properties": { "spec": { "$ref": "#/definitions/Ingestion.Api" } }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": { "kind": { "const": "Ingestion/Source/S3" } }
+                    },
+                    "then": {
+                        "properties": { "spec": { "$ref": "#/definitions/Ingestion.Source.S3" } }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": { "kind": { "const": "Ingestion/Source/RDS" } }
+                    },
+                    "then": {
+                        "properties": { "spec": { "$ref": "#/definitions/Ingestion.Source.RDS" } }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": { "kind": { "const": "Ingestion/Source/DynamoDB" } }
+                    },
+                    "then": {
+                        "properties": { "spec": { "$ref": "#/definitions/Ingestion.Source.DynamoDB" } }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": { "kind": { "const": "Storage/S3" } }
+                    },
+                    "then": {
+                        "properties": { "spec": { "$ref": "#/definitions/Storage.S3" } }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": { "kind": { "const": "DataProduct/Discoverability" } }
+                    },
+                    "then": {
+                        "properties": { "spec": { "$ref": "#/definitions/DataProduct.Discoverability" } }
+                    }
+                },
+                {
+                    "if": {
+                        "properties": { "kind": { "const": "DataProduct/DataSet" } }
+                    },
+                    "then": {
+                        "properties": { "spec": { "$ref": "#/definitions/DataProduct.DataSet" } }
+                    }
+                }
+            ]
+        },
+        "Metadata": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name"
+            ],
+            "title": "Metadata"
+        },
+        "Application": {
+            "type": "object",
+            "properties": {
+                "cloud": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "region": {
+                            "type": "string"
+                        },
+                        "vpc": {
+                            "type": "string"
+                        },
+                        "account": {
+                            "type": "object",
+                            "additionalProperties": false,
+                            "properties": {
+                                "id": {
+                                    "type": "integer"
+                                },
+                                "environment": {
+                                    "type": "string",
+                                    "enum": [ "dev", "stg", "prd" ]
+                                }
+                            },
+                            "required": [
+                                "id",
+                                "environment"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "region",
+                        "vpc",
+                        "account"
+                    ]
+                }
+            },
+            "required": [
+                "cloud"
+            ]
+        },
+        "Ingestion.Api": {
+            "type": "object",
+            "properties": {
+                "path": {
+                    "type": "string"
+                }
+            },
+            "required": [ "path" ]
+        },
+        "Ingestion.Source.S3": {
+            "type": "object",
+            "properties": {
+                "adapter": {
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string"
+                        },
+                        "path": {
+                            "type": "string"
+                        },
+                        "role": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [ "name", "path", "role" ]
+                },
+                "fields": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "partitions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Ingestion.Source.Adapter.Partition"
+                    }
+                }
+            },
+            "required": [ "adapter", "fields", "partitions" ]
+        },
+        "Ingestion.Source.RDS": {
+            "type": "object",
+            "properties": {
+                "adapter": {
+                    "type": "object",
+                    "properties": {
+                        "database": {
+                            "type": "string"
+                        },
+                        "endpoint": {
+                            "type": "string"
+                        },
+                        "username": {
+                            "type": "string"
+                        },
+                        "password": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [ "database", "endpoint", "username", "password" ]
+                },
+                "tables": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string"
+                            },
+                            "fields": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "partitions": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/definitions/Ingestion.Source.Adapter.Partition"
+                                }
+                            }
+                        },
+                        "required": [ "name", "fields", "partitions" ]
+                    }
+                }
+            },
+            "required": [ "adapter", "tables" ]
+        },
+        "Ingestion.Source.DynamoDB": {
+            "type": "object",
+            "properties": {
+                "adapter": {
+                    "type": "object",
+                    "properties": {
+                        "role": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [ "role" ]
+                },
+                "fields": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "partitions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Ingestion.Source.Adapter.Partition"
+                    }
+                }
+            },
+            "required": [ "adapter", "fields", "partitions" ]
+        },
+        "Storage.S3": {
+            "type": "object",
+            "properties": {
+                "sor": {
+                    "$ref": "#/definitions/Storage.S3.Part"
+                },
+                "sot": {
+                    "$ref": "#/definitions/Storage.S3.Part"
+                },
+                "spec": {
+                    "$ref": "#/definitions/Storage.S3.Part"
+                },
+                "temp": {
+                    "$ref": "#/definitions/Storage.S3.Part"
+                },
+                "logs": {
+                    "$ref": "#/definitions/Storage.S3.Part"
+                }
+            },
+            "required": [ "sor" ]
+        },
+        "DataProduct.Discoverability": {
+            "type": "object",
+            "properties": {
+                "ownership": {
+                    "type": "object",
+                    "properties": {
+                        "domain": {
+                            "type": "string"
+                        },
+                        "version": {
+                            "type": "string",
+                            "default": "1.0.0"
+                        },
+                        "licence": {
+                            "type": "string"
+                        },
+                        "expiration": {
+                            "type": "string"
+                        },
+                        "glossary": {
+                            "type": "array",
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "key": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [ "key", "description" ]
+                            }
+                        }
+                    },
+                    "required": [ "domain", "version", "licence", "expiration", "glossary" ]
+                }
+            },
+            "required": [ "ownership" ]
+        },
+        "DataProduct.DataSet": {
+            "type": "object",
+            "properties": {
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "database": {
+                            "type": "string"
+                        },
+                        "table": {
+                            "type": "string"
+                        },
+                        "compreesed": {
+                            "type": "boolean",
+                            "default": true
+                        },
+                        "properties": {
+                            "type": "object",
+                            "additionalProperties": true
+                        },
+                        "serde": {
+                            "type": "object",
+                            "properties": {
+                                "format": {
+                                    "type": "string",
+                                    "enum": [ "CSV", "PARQUET", "JSON", "ORC" ]
+                                },
+                                "properties": {
+                                    "type": "object",
+                                    "additionalProperties": true
+                                }
+                            },
+                            "required": [ "format" ]
+                        },
+                        "format": {
+                            "type": "object",
+                            "properties": {
+                                "input": {
+                                    "type": "string",
+                                    "enum": [ "CSV", "PARQUET", "XML", "JSON", "AVRO" ]
+                                },
+                                "output": {
+                                    "type": "string",
+                                    "enum": [ "CSV", "PARQUET", "XML", "JSON", "AVRO" ]
+                                }
+                            },
+                            "required": [ "input", "output" ]
+                        }
+                    },
+                    "required": [ "database", "table" ]
+                },
+                "transformation": {
+                    "type": "object",
+                    "properties": {
+                        "source": {
+                            "type": "object",
+                            "properties": {
+                                "origins": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "target": {
+                                    "type": "string"
+                                }
+                            },
+                            "required": [ "origins", "target" ]
+                        },
+                        "rules": {
+                            "type": "array",
+                            "items": {
+                                "type": "object"
+                            }
+                        }
+                    },
+                    "required": [ "source" ]
+                }
+            },
+            "required": [ "schema", "transformation" ]
+        },
+        "Storage.S3.Part": {
+            "type": "object",
+            "properties": {
+                "transitions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/Storage.S3.Transition"
+                    }
+                }
+            },
+            "required": [ "transitions" ]
+        },
+        "Storage.S3.Transition": {
+            "type": "object",
+            "properties": {
+                "days": {
+                    "type": "integer"
+                },
+                "storageClass": {
+                    "type": "string",
+                    "enum": [ "STANDARD_IA", "INTELLIGENT_TIERING", "GLACIER", "DEEP_ARCHIVE" ]
+                }
+            },
+            "required": [ "days", "storageClass" ]
+        },
+        "Ingestion.Source.Adapter.Partition": {
+            "type": "object",
+            "properties": {
+                "field": {
+                    "type": "string"
+                },
+                "pattern": {
+                    "type": "string"
+                },
+                "formats": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "required": [ "field" ]
+        }
+    }
+}
