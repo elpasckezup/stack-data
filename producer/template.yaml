@@ -3,11 +3,6 @@ version: 1.0.0
 description: Template for producer account data mesh infrastructure
 types:
   - app-template
-inputs:
-  - label: Product data name
-    type: text
-    name: product_name
-    global: true
 
 hooks:
   - type: run-script
