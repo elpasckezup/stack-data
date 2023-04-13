@@ -1,0 +1,17 @@
+name: ingestion
+description: ok
+inputs:
+- label: Commit message
+  type: text
+  default: example
+  name: message
+  required: 'true'
+supported-os:
+- windows
+- linux
+- mac
+requirements-check:
+  dependency-example:
+    check-command: git --version
+    info: git is not installed
+command: git add . ; git commit -m "{{inputs.message}}"
