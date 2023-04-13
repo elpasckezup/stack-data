@@ -20,3 +20,7 @@ inputs:
     type: text
     name: plugin_name
     required: true
+hooks:
+  - type: run-script
+    trigger: before-render
+    script: hooks/scan.py
