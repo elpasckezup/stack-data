@@ -16,9 +16,9 @@ technologies: # Ref: https://docs.stackspot.com/docs/create-stacks/yaml-files/ya
 types:
   - app
 inputs:
-  - label: Plugin name
+  - label: Configuration
     type: text
-    name: plugin_name
+    name: config
     required: true
 hooks:
   - type: run-script
