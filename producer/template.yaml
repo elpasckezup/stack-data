@@ -4,10 +4,16 @@ description: Template for producer account data mesh infrastructure
 types:
   - app-template
 
-hooks:
-  - type: run-script
-    trigger: before-input
-    script: hooks/scan.py
+inputs:
+  - label: Product name
+    type: text
+    name: product_name
+    required: true
+
+# hooks:
+#   - type: run-script
+#     trigger: before-input
+#     script: hooks/scan.py
 
 global-computed-inputs:
   resource_prefix: "{{product_name}}"

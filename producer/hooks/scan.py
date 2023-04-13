@@ -74,17 +74,26 @@ def append(root=dict, data=dict):
         spec.update(data['metadata'])
         datasets.append(spec)
 
-def start(workdir: str) -> dict:
+def pl(kind:str):
+
+    return None
+
+def start(workdir: str, plugins:list) -> tuple:
     root = {}
+    plugins = []
     for path, folders, files in os.walk(workdir):
         for file in files:
             if file.endswith("yml") or file.endswith("yaml"):
                 data = load(path=os.path.join(path, file))
                 append(root=root, data=data)
-    return root
+                plugin = pl(kind=data['kind'])
+                if plugin is not None:
+                    if plugin not in plugins:
+                        plugins.append(plugin)
+    return (root, plugins)
 
 def run(metadata: Metadata = None):
-    data = start(workdir='./')
+    data, plugins = start(workdir='./')
     metadata.global_inputs.update(data)
     with open(f'{metadata.target_path}/stk.yaml', 'w') as file:
         template = os.path.basename(metadata.component_path)
@@ -100,6 +109,10 @@ def run(metadata: Metadata = None):
             'global_computed_inputs': metadata.global_computed_inputs
         }
         yaml.dump(data, file)
+    path = metadata.target_path
+    stack = os.path.basename(metadata.stack_path)
+    for plugin in plugins:
+        os.system(f'cd {path} && stk apply plugin {stack}/{plugin} --skip-warning')
     return metadata
 
 #run(workdir=sys.argv[1])
