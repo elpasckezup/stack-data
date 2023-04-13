@@ -15,3 +15,8 @@ technologies: # Ref: https://docs.stackspot.com/docs/create-stacks/yaml-files/ya
   - "Api"
 types:
   - app
+inputs:
+  - label: Plugin name
+    type: text
+    name: plugin_name
+    required: true
