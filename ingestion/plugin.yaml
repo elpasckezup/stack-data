@@ -23,4 +23,4 @@ inputs:
 hooks:
   - type: run-script
     trigger: before-render
-    script: hooks/scan.py
+    script: hooks/setup.py
